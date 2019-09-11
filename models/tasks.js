@@ -8,7 +8,7 @@ let tasksSchema = mongoose.Schema({
     },
     assignTo: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'DevelorCol'
+        ref: 'DevelopersCol'
     },
     date: {
         type: Date

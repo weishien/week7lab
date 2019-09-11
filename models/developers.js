@@ -11,6 +11,7 @@ let developersSchema = mongoose.Schema({
     },
     level: {
         type: String,
+        required: true,
         uppercase: true
     },
     address: {
@@ -24,3 +25,7 @@ let developersSchema = mongoose.Schema({
         default: Date.now
     }
 })
+
+let DeveloperModel = mongoose.model('DevelopersCol',developersSchema);
+
+module.exports = DeveloperModel;

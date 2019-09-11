@@ -20,9 +20,46 @@ let url = "mongodb://localhost:27017/taskdb";
 
 mongoose.connect(url,{useNewUrlParser:true},function(err) {
     if (err) {
+        console.log("Error connecting to mongoose!");
         throw err;
     }
-    
+})
+
+// check pathname and return static homepage
+app.get('/', function(req,res) {
+    res.sendFile(viewPaths + '/index.html');
+});
+
+app.get('/listTasks', function(req,res) {
+    col.find({}).toArray(function(err,data) {
+        res.render(viewPaths + '/listTasks.html', {
+            task : data
+        });
+    });
+});
+
+app.get('/newTask', function(req,res) {
+    res.sendFile(viewPaths + '/newTask.html');
+});
+
+app.get('/deleteTask', function(req,res) {
+    res.sendFile(viewPaths + '/deleteTask.html');
+});
+
+app.get('/deleteCompleted', function(req,res) {
+    res.sendFile(viewPaths + '/deleteCompleted.html');
+})
+
+app.get('/update', function(req,res) {
+    res.sendFile(viewPaths + '/update.html');
+})
+
+app.get('/insertDeveloper',function(req,res) {
+    res.sendFile(viewPaths + '/insertDeveloper.html');
+})
+
+app.get('/listDevelopers', function(req,res) {
+    res.sendFile(viewPaths + '/listDevelopers.html');
 })
 
 app.listen(8080);

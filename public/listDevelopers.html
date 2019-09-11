@@ -13,8 +13,8 @@
         <h3>
             <a href="/">Home</a> <br>
             <a href="/insertDeveloper"> Add Developer </a>
-            <a href="/listDevelopers"> List Developers </a>
             <a href="/newTask"> Add New Task</a> <br>
+            <a href="/listTasks"> List Tasks</a> <br>
             <a href="/update"> Update Task</a> <br>
             <a href="/deleteTask"> Delete Task by Id</a> <br>
             <a href="/deleteCompleted"> Delete Completed Tasks</a> <br>
@@ -25,43 +25,49 @@
             <table>
                     <tr>
                         <th>
-                            Task Id
+                            Developer Id
                         </th>
                         <th>
-                            Task Name
+                            Developer Name
                         </th>
                         <th>
-                            Assign To
+                            Level
                         </th>
                         <th>
-                            Due Date
+                            State
                         </th>
                         <th>
-                            Task Status
+                            Suburb
                         </th>
                         <th>
-                            Task Description
+                            Street
+                        </th>
+                        <th>
+                            Unit
                         </th>
                     </tr>
-                    <% for (let i = 0; i < task.length; i++ ) { %>
+                    <% for (let i = 0; i < developer.length; i++ ) { %>
                         <tr>
                             <td>
-                                <%= task[i].id %>
+                                <%= developer[i]._id %>
                             </td>
                             <td>
-                                <%= task[i].taskName %>
+                                <%= developer[i].firstName + developer[i].lastName %>
                             </td>
                             <td>
-                                <%= task[i].assignTo %>
+                                <%= developer[i].level %>
                             </td>
                             <td>
-                                <%= task[i].dueDate %>
+                                <%= developer[i].address.state %>
                             </td>
                             <td>
-                                <%= task[i].taskStatus %>
+                                <%= developer[i].address.suburb %>
                             </td>
                             <td>
-                                <%= task[i].description %>
+                                <%= developer[i].address.street %>
+                            </td>
+                            <td>
+                                <%= developer[i].address.unit %>
                             </td>
                         </tr>
                     <% } %>
