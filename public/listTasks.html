@@ -1,0 +1,72 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="style.css">
+        <style>
+            table,th,td {
+                border: solid maroon;
+            } 
+        </style>
+    </head>
+
+    <body>
+
+        <h3>
+            <a href="/">Home</a> <br>
+            <a href="/newTask"> Add New Task</a> <br>
+            <a href="/listTasks"> List Tasks</a> <br>
+            <a href="/update"> Update Task</a> <br>
+            <a href="/deleteTask"> Delete Task by Id</a> <br>
+            <a href="/deleteCompleted"> Delete Completed Tasks</a> <br>
+            <a href="/insertMany"> Add Multiple Tasks </a>
+        </h3>
+
+
+        <p>
+            <table>
+                    <tr>
+                        <th>
+                            Task Id
+                        </th>
+                        <th>
+                            Task Name
+                        </th>
+                        <th>
+                            Assign To
+                        </th>
+                        <th>
+                            Due Date
+                        </th>
+                        <th>
+                            Task Status
+                        </th>
+                        <th>
+                            Task Description
+                        </th>
+                    </tr>
+                    <% for (let i = 0; i < task.length; i++ ) { %>
+                        <tr>
+                            <td>
+                                <%= task[i].id %>
+                            </td>
+                            <td>
+                                <%= task[i].taskName %>
+                            </td>
+                            <td>
+                                <%= task[i].assignTo %>
+                            </td>
+                            <td>
+                                <%= task[i].dueDate %>
+                            </td>
+                            <td>
+                                <%= task[i].taskStatus %>
+                            </td>
+                            <td>
+                                <%= task[i].description %>
+                            </td>
+                        </tr>
+                    <% } %>
+            </table>
+        </p>
+        
+    </body>
+</html>
