@@ -16,7 +16,7 @@ app.set('view engine','html');
 app.use(express.static('img'));
 app.use(express.static('css'));
 
-let url = "mongodb://localhost:27017/taskdb";
+let url = "mongodb://localhost:27017/week7lab";
 
 mongoose.connect(url,{useNewUrlParser:true},function(err) {
     if (err) {
