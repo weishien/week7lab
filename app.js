@@ -16,6 +16,7 @@ app.set('view engine','html');
 app.use(express.static('img'));
 app.use(express.static('css'));
 
+// need this to access req.body
 app.use(express.urlencoded({
     extended:false
 }));
@@ -40,8 +41,9 @@ app.get('/', function(req,res) {
 });
 
 app.get('/listTasks', function(req,res) {
-    col.find({}).toArray(function(err,data) {
-        res.render(viewPaths + '/listTasks.html', {
+    Task.find().exec(function(err,data) {
+        if(err) {throw err};
+        res.render(viewPaths + '/listTasks',{
             task : data
         });
     });
@@ -76,6 +78,9 @@ app.get('/listDevelopers', function(req,res) {
     });
 });
 
+
+// listen to '/newDeveloper' action from insertDeveloper.html
+// save the data according to schema to the developerscol 
 app.post('/newDeveloper', function(req,res) {
     let developer = new Developer ({
         _id: new mongoose.Types.ObjectId(),
@@ -102,5 +107,22 @@ app.post('/newDeveloper', function(req,res) {
 
     res.redirect('/listDevelopers');
 })
+
+// listen to action '/incomingTask' from newTask.html
+// catch data input by clients and return static list task page
+app.post('/incomingTask', function(req,res) {
+    let idRandom = Math.round(Math.random()*1000);
+    let newTask = {
+        id:parseInt(idRandom),
+        taskName:req.body.taskName,
+        assignTo:req.body.assignTo,
+        dueDate: new Date (req.body.dueDate),
+        taskStatus:req.body.taskStatus,
+        description:req.body.description
+    }
+    console.log(newTask)
+    col.insertOne(newTask);
+    res.redirect('/')
+});
 
 app.listen(8080);
