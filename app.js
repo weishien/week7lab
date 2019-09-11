@@ -40,15 +40,6 @@ app.get('/', function(req,res) {
     res.sendFile(viewPaths + '/index.html');
 });
 
-app.get('/listTasks', function(req,res) {
-    Task.find().exec(function(err,data) {
-        if(err) {throw err};
-        res.render(viewPaths + '/listTasks',{
-            task : data
-        });
-    });
-});
-
 app.get('/newTask', function(req,res) {
     res.sendFile(viewPaths + '/newTask.html');
 });
@@ -67,6 +58,15 @@ app.get('/update', function(req,res) {
 
 app.get('/insertDeveloper',function(req,res) {
     res.sendFile(viewPaths + '/insertDeveloper.html');
+});
+
+app.get('/listTasks', function(req,res) {
+    Task.find().exec(function(err,data) {
+        if(err) {throw err};
+        res.render(viewPaths + '/listTasks',{
+            task : data
+        });
+    });
 });
 
 app.get('/listDevelopers', function(req,res) {
@@ -112,16 +112,22 @@ app.post('/newDeveloper', function(req,res) {
 // catch data input by clients and return static list task page
 app.post('/incomingTask', function(req,res) {
     let idRandom = Math.round(Math.random()*1000);
-    let newTask = {
-        id:parseInt(idRandom),
+    let task = new Task ({
+        taskId:idRandom,
         taskName:req.body.taskName,
-        assignTo:req.body.assignTo,
-        dueDate: new Date (req.body.dueDate),
+        assignTo:mongoose.Types.ObjectId(req.body.assignTo),
+        date: new Date (req.body.dueDate),
         taskStatus:req.body.taskStatus,
-        description:req.body.description
-    }
-    console.log(newTask)
-    col.insertOne(newTask);
+        taskDescription:req.body.description
+    });
+
+    task.save(function(err) {
+        if(err) {
+            console.log('Error saving task!');
+            throw err;
+        }
+        console.log('Task saved successfully!')
+    })
     res.redirect('/listTasks')
 });
 
@@ -130,7 +136,7 @@ app.post('/incomingTask', function(req,res) {
 app.post('/deleteById', function(req,res) {
     // check id and delete
     console.log(req.body.id);
-    Task.deleteOne({id : parseInt(req.body.id)},function(err,obj) {
+    Task.deleteOne({taskId : parseInt(req.body.id)},function(err,obj) {
         console.log(obj.result);
     })
     res.redirect('/listTasks');
@@ -139,7 +145,7 @@ app.post('/deleteById', function(req,res) {
 // listen to action '/removeDone' from deleteCompleted.html
 // delete all completed tasks
 app.post('/removeDone', function(req,res) {
-    let query = {taskStatus : req.body.status };
+    let query = {taskStatus : "Complete" };
     console.log(query)
     Task.deleteMany(query, function(err,obj) {
         console.log(obj.result);
@@ -151,9 +157,9 @@ app.post('/removeDone', function(req,res) {
 // find the id 
 // update the status
 app.post('/updateTask', function(req,res) {
-    query = {id : parseInt(req.body.id)};
+    query = {taskId : parseInt(req.body.id)};
     console.log(query);
-    Task.updateOne(query,{$set : {taskStatus:req.body.status}}, {upsert:false},function(err, obj) {
+    Task.updateOne(query,{$set : {taskStatus:req.body.taskStatus}}, {upsert:false},function(err, obj) {
         console.log(obj.result);
     })
     res.redirect('/listTasks');

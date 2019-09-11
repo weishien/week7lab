@@ -2,6 +2,7 @@
 let mongoose = require('mongoose');
 
 let tasksSchema = mongoose.Schema({
+    taskId: Number,
     taskName: {
         type:String,
         required:true

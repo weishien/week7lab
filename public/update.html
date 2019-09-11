@@ -6,6 +6,7 @@
     <h3>
         <a href="/">Home</a> <br>
         <a href="/insertDeveloper"> Add Developer </a> <br>
+        <a href="/listDevelopers"> List Developers </a> <br>
         <a href="/newTask"> Add New Task</a> <br>
         <a href="/listTasks"> List Tasks</a> <br>
         <a href="/deleteTask"> Delete Task by Id</a> <br>
@@ -15,7 +16,10 @@
     <body>
         <form action="/updateTask" method="POST">
             Task ID<input type="number" name="id"/> <br>
-            Status <input type="text" name="status"/> <br>
+            Task Status <select name="taskStatus" >
+                <option value="Complete">Complete</option>
+                <option value="InProgress"> In Progress </option>
+            </select> <br>
             <button> Submit </button>
         </form>
     </body>
