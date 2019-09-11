@@ -16,9 +16,18 @@ app.set('view engine','html');
 app.use(express.static('img'));
 app.use(express.static('css'));
 
+app.use(express.urlencoded({
+    extended:false
+}));
+
+// import model for tasks and developers
+let Task = require(__dirname + '/models/tasks');
+let Developer = require(__dirname  + '/models/developers');
+
+// path for mongoose
 let url = "mongodb://localhost:27017/week7lab";
 
-mongoose.connect(url,{useNewUrlParser:true},function(err) {
+mongoose.connect(url,{useNewUrlParser:true},{useUnifiedTopology:true},function(err) {
     if (err) {
         console.log("Error connecting to mongoose!");
         throw err;
@@ -48,18 +57,50 @@ app.get('/deleteTask', function(req,res) {
 
 app.get('/deleteCompleted', function(req,res) {
     res.sendFile(viewPaths + '/deleteCompleted.html');
-})
+});
 
 app.get('/update', function(req,res) {
     res.sendFile(viewPaths + '/update.html');
-})
+});
 
 app.get('/insertDeveloper',function(req,res) {
     res.sendFile(viewPaths + '/insertDeveloper.html');
-})
+});
 
 app.get('/listDevelopers', function(req,res) {
-    res.sendFile(viewPaths + '/listDevelopers.html');
+    Developer.find().exec(function(err,data) {
+        if(err) {throw err};
+        res.render(viewPaths + '/listDevelopers',{
+            developer : data
+        });
+    });
+});
+
+app.post('/newDeveloper', function(req,res) {
+    let developer = new Developer ({
+        _id: new mongoose.Types.ObjectId(),
+        name: {
+            firstName: req.body.firstName,
+            lastName: req.body.lastName
+        },
+        level: req.body.level,
+        address: {
+            state: req.body.state,
+            suburb: req.body.suburb,
+            street: req.body.street,
+            unit: req.body.unit
+        }
+    });
+
+    developer.save(function(err) {
+        if (err) {
+            console.log('Error saving developer!');
+            throw err;
+        }
+        console.log('Developer saved successfully!');
+    })
+
+    res.redirect('/listDevelopers');
 })
 
 app.listen(8080);
