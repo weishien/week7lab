@@ -122,7 +122,41 @@ app.post('/incomingTask', function(req,res) {
     }
     console.log(newTask)
     col.insertOne(newTask);
-    res.redirect('/')
+    res.redirect('/listTasks')
+});
+
+// listen to action '/deleteById' from deleteTask.html
+// delete data with equivalent ID from database
+app.post('/deleteById', function(req,res) {
+    // check id and delete
+    console.log(req.body.id);
+    Task.deleteOne({id : parseInt(req.body.id)},function(err,obj) {
+        console.log(obj.result);
+    })
+    res.redirect('/listTasks');
+})
+
+// listen to action '/removeDone' from deleteCompleted.html
+// delete all completed tasks
+app.post('/removeDone', function(req,res) {
+    let query = {taskStatus : req.body.status };
+    console.log(query)
+    Task.deleteMany(query, function(err,obj) {
+        console.log(obj.result);
+    })
+    res.redirect('/listTasks');
+});
+
+// listen to action '/updateTask' from update.html
+// find the id 
+// update the status
+app.post('/updateTask', function(req,res) {
+    query = {id : parseInt(req.body.id)};
+    console.log(query);
+    Task.updateOne(query,{$set : {taskStatus:req.body.status}}, {upsert:false},function(err, obj) {
+        console.log(obj.result);
+    })
+    res.redirect('/listTasks');
 });
 
 app.listen(8080);
