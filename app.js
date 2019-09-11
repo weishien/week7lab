@@ -12,6 +12,10 @@ let app = express();
 app.engine('html',ejs.renderFile);
 app.set('view engine','html');
 
+// tells express which file to look for static assets
+app.use(express.static('img'));
+app.use(express.static('css'));
+
 let url = "mongodb://localhost:27017/taskdb";
 
 mongoose.connect(url,{useNewUrlParser:true},function(err) {
