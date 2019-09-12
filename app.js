@@ -165,4 +165,12 @@ app.post('/updateTask', function(req,res) {
     res.redirect('/listTasks');
 });
 
+// Extra task
+app.get('/sortComplete',function(req,res) {
+    Task.find({taskStatus:'Complete'}).sort({taskName:-1}).limit(3).exec(function(err,data) {
+        data=JSON.stringify(data,null,4);
+        res.send("<pre>" + data  + "</pre>");
+    });
+})
+
 app.listen(8080);
