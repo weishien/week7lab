@@ -26,7 +26,7 @@ let Task = require(__dirname + '/models/tasks');
 let Developer = require(__dirname  + '/models/developers');
 
 // path for mongoose
-let url = "mongodb://localhost:27017/week7lab";
+let url = "mongodb://" + process.argv[2] + ":27017/week7lab";
 
 mongoose.connect(url,{useNewUrlParser:true},{useUnifiedTopology:true},function(err) {
     if (err) {
